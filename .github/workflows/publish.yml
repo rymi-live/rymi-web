@@ -1,0 +1,34 @@
+name: Publish to npm
+
+on:
+  push:
+    tags: ['@rymi/web@*', 'web-v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Trusted publishing (OIDC, no NPM_TOKEN) needs npm >= 11.5.1; the
+      # publisher is configured per package on npmjs.com → this repo + publish.yml.
+      - name: Upgrade npm for trusted publishing
+        run: npm install -g npm@^11.5.1
+
+      - name: Refuse workspace specifiers and missing artifacts
+        run: node scripts/check-package.mjs
+
+      - name: Verify prebuilt artifact exists
+        run: test -f dist/rymi.cjs && test -f dist/rymi.mjs && test -f dist/rymi.js && test -f dist/index.d.ts
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public

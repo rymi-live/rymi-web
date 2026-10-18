@@ -1,0 +1,46 @@
+{
+    "name": "@rymi/web",
+    "version": "1.0.0",
+    "description": "Browser SDK for Rymi voice agents over WebRTC",
+    "license": "MIT",
+    "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rymi-live/rymi-web.git"
+    },
+    "bugs": {
+        "url": "https://github.com/rymi-live/rymi-web/issues"
+    },
+    "main": "./dist/rymi.cjs",
+    "module": "./dist/rymi.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/rymi.mjs",
+            "require": "./dist/rymi.cjs"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public",
+        "provenance": true
+    },
+    "scripts": {
+        "build": "vite build && vite build --mode umd",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run"
+    },
+    "dependencies": {
+        "livekit-client": "^2.8.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.2",
+        "vite": "^5.0.0",
+        "vite-plugin-dts": "^3.0.0"
+    }
+}
